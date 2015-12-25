@@ -32,7 +32,7 @@ website = 'http://123.57.235.88'
 # **************************************************************
 
 # Add your Disqus shortname to enable comments powered by Disqus
-disqus_shortname = 'wangjiesblog'
+disqus_shortname = 'wangyanjiesblog'
 
 # Change your favicon (new favicon goes in _static directory)
 html_favicon = '_static/tinkerer.ico'
