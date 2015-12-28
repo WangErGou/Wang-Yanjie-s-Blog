@@ -303,6 +303,14 @@ Python 解析源文件需要经过 5 个步骤：
 
 难道 Python 在解析源文件的时候没有将 utf-8 和 utf8 等价？
 
+2015-12-28 补充
+---------------
+
+根据 Python Bug Tracker 上的 `issue25937 <http://bugs.python.org/issue25937>`_ 应该可以看出我的猜测是正确的。
+
+    - 当通过 `coding:<encoding>` 声明文件的编码格式为 utf-8 是， :ref:`python_parse` 中的第二和第三步被省略了。
+    - cpython 并没有把 utf-8 和 utf8 等价。
+
 参考
 ----
 
