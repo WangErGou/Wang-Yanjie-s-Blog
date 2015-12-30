@@ -9,7 +9,7 @@
 问题重现
 --------
 
-首先打开一个窗口A，运行 MySQL 客户端，创建一张测试表，并插入一行数据。
+| 首先打开一个窗口A，运行 MySQL 客户端，创建一张测试表，并插入一行数据。
 
 .. code-block:: mysql
 
@@ -22,7 +22,7 @@
       mysql> INSERT INTO `test_table`(`user_name`) VALUES('user_01');
       Query OK, 1 row affected (0.00 sec)
 
-随后，再打开一个窗口A，运行 Python Shell ，查询测试表中的数据。
+| 随后，再打开一个窗口A，运行 Python Shell ，查询测试表中的数据。
 
 .. code-block:: python
 
@@ -37,15 +37,15 @@
    1L
    id: 1, user: user_01
 
-回到窗口A，插入一行新值。
+| 回到窗口A，插入一行新值。
 
 .. code-block:: mysql
 
    mysql> INSERT INTO `test_table`(`user_name`) VALUES('user_02');
    Query OK, 1 row affected (0.00 sec)
 
-现在，来到最后一步：回到窗口B，查询现在测试表中的数据，出人意料的事情发生了：
-Python 并没有查询到最新的数据！
+| 现在，来到最后一步：回到窗口B，查询现在测试表中的数据，出人意料的事情发生了：
+  Python 并没有查询到最新的数据！
 
 .. code-block:: python
 
@@ -57,7 +57,7 @@ Python 并没有查询到最新的数据！
    1L
    id: 1, user: user_01
 
-难道是刚才的 `INSERT` 没有生效？
+| 难道是刚才的 ``INSERT`` 没有生效？
 
 .. code-block:: mysql
 
