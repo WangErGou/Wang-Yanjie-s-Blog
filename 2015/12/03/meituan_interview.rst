@@ -2,7 +2,7 @@
 ======================
 
 .. author:: default
-.. categories:: 生活
+.. categories:: 工作
 .. tags:: 生活、求职
 .. comments::
 
