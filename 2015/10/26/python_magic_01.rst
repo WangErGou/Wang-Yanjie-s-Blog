@@ -16,10 +16,11 @@ Python 装饰器
 而产生的一种压力去驱使我去确保说出来的内容都是正确。而在这个确保正确的过程中，我或发现了一些自以为是的错误，
 或对原有知识有了一个更深的理解。
 
-我会尽量在这儿写两类文章：
+.. TODO 下面这段话中的空格是否是应该的
 
-- 记录工作中的遇到的有意义的错误及其原因和解决方案
-- 总结(摘抄？)某个方面的知识
+我会尽量在这儿写两类文章：
+    - 记录工作中的遇到的有意义的错误及其原因和解决方案
+    - 总结(摘抄？)某个方面的知识
 
 
 装饰器
@@ -37,7 +38,7 @@ Python 中的装饰器和函数式编程部分是我日常使用中最喜欢的�
 
 所以来看两段等效的代码。
 
--  装饰器不带参数
+| 装饰器不带参数
 
 .. code-block:: python
 
@@ -45,7 +46,7 @@ Python 中的装饰器和函数式编程部分是我日常使用中最喜欢的�
     def func(arg1, arg2):                              pass
         pass                                       func = dec(func)
 
--  装饰器带参数
+| 装饰器带参数
 
 .. code-block:: python
 
@@ -53,11 +54,11 @@ Python 中的装饰器和函数式编程部分是我日常使用中最喜欢的�
    def func(arg1, arg2):                               pass
        pass                                        func = dec_args(d_arg1, d_arg2)(func)
 
-对于第二段代码中的 `dec_args(d_arg1, d_arg2)(func)` ，也许会令人产生一点困惑。
-首先 `dec_args(d_arg1, d_arg2)` 会首先被执行并返回一个可调用对象，
-然后 `func` 被当做参数传递给这个可调用对象。
-如果 `dec_args(d_arg1, d_arg2)` 返回的不是一个可调用对象，
-那么 Python 就会抛出异常 `TypeError`
+对于第二段代码中的 ``dec_args(d_arg1, d_arg2)(func)`` ，也许会令人产生一点困惑。
+首先 ``dec_args(d_arg1, d_arg2)`` 会首先被执行并返回一个可调用对象，
+然后 ``func`` 被当做参数传递给这个可调用对象。
+如果 ``dec_args(d_arg1, d_arg2)`` 返回的不是一个可调用对象，
+那么 Python 就会抛出异常 ``TypeError`` 。
 
 多个装饰器的执行顺序
 ++++++++++++++++++++
@@ -78,10 +79,10 @@ Python 中的装饰器和函数式编程部分是我日常使用中最喜欢的�
         pass
     func = dec1(dec2(func))
 
-`functools.wraps` 的作用
-++++++++++++++++++++++++
+``functools.wraps`` 的作用
+++++++++++++++++++++++++++
 
-首先来看，如果不使用 `functools.wraps` 会怎么样。
+首先来看，如果不使用 ``functools.wraps`` 会怎么样。
 
 .. code-block:: python
 
@@ -101,11 +102,11 @@ Python 中的装饰器和函数式编程部分是我日常使用中最喜欢的�
     >>> func.__doc__ 
     'this is wrapper'
 
-当未使用 `functools.wraps` 或者等效的方法，那么被装饰后的函数的
-`__module__` , `__name__` , `__doc__` , `__dict__` 这四个属性反射的就是装饰器的对应
+当未使用 ``functools.wraps`` 或者等效的方法，那么被装饰后的函数的
+``__module__`` , ``__name__`` , ``__doc__`` , ``__dict__`` 这四个属性反射的就是装饰器的对应
 属性，而不是原函数的对应属性，这显然不是我们需要的。
 
-`functools.wraps` 是怎么实现这种效果的，
+``functools.wraps`` 是怎么实现这种效果的，
 请参看 `<https://docs.python.org/2/library/functools.html>`_ 。
 
 脑洞时刻
