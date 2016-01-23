@@ -1,5 +1,5 @@
-基于SAML的单点登录系统一
-========================
+基于SAML的单点登录系统 一
+=========================
 
 .. author:: default
 .. categories:: 技术
@@ -9,9 +9,10 @@
 
 前言
 ----
-最近工作中在搭建一个基于SAML的单点登录（Single sign-on）系统，准备把相关的知识总结与此。
-由于周围没有有经验的大腿可以抱，所以所有的内容都是我从 Mr.Google 和一些标准文档中整理过来的。
-错漏应该是存在的，如果有人愿意提醒，感激不尽。
+
+最近忙于搭建一个基于SAML的单点登录（Single sign-on）系统，准备把相关的知识总结与此。
+由于周围没有有经验的大腿可以抱，一切的内容都需要我从 Mr.Google 和一些标准文档中整理过来。
+所以错漏可能难以避免，如果愿意提醒一二，感激不尽。
 
 基本概念
 --------
@@ -19,14 +20,14 @@
 SSO
 +++
 
-单点登录，single sign-on，习惯简称为 SSO，是一种针对 **多个相关但独立的系统** 的用户登录和授权的方式。
-在 SSO 中，用用户可以通过一套用户名和密码登录多个系统，更进一步，可以无缝登录多个系统。
-这儿的无缝登录指的是：当用户在某个系统登录后，其再去访问其它系统中的受限资源时，就不需要在登录，
+单点登录，single sign-on，习惯简称为 SSO，是一种针对 **多个相关但独立系统** 的用户登录和授权的方式。
+在 SSO 中，用户可以通过一套用户名和密码登录多个系统，更进一步的，可以在多个系统间实现无缝登录。
+这儿的无缝登录指：当用户在某个系统登录后，再去访问其它系统时，就不需要再登录，
 即通过一次登录，登录了多个系统。
 
 从上面的描述中，我们可以看出 SSO 主要有以下特点：
 
-    - SSO 主要用于有多个相关但独立的系统的情况
+    - SSO 主要用于有多个 **相关但独立** 的系统
     - 对用户而言，SSO 的优点在于：
 
       + 只需要记录一套账号密码就可以登录多个系统
@@ -35,27 +36,26 @@ SSO
       OAuth 等登录方式也可以实现第一点，所以 SSO 的主要优势在于 **一次登录多个系统** 。
     - SSO 的缺点也很明显：
 
-      + 用户登录一次就对所有资源都有了访问权限，那么用户的权限被误用、盗用的可能性自然也就高了
-      + SSO 对稳定性的要求会更高，因为受影响的系统更多
+      + 用户登录一次就对所有系统都有了访问权限，那么用户的权限被误用、盗用的可能性也就更高
+      + 对 SSO 系统稳定性的要求会更高，因为受影响的系统更多
 
 SAML
 ++++
 
 Web 中一般通过浏览器的 cookies 来维护用户的登录状态，但是 cookies 并不能在不同的域名之间传递。
-SSO 需要在多个系统（多个域名）之间共享用户的状态，所以就需要一种机制，在不同的系统之间共享用户的状态。
-Security Assertion Markup Language，SAML，就是一种基于XML的标准去在不同的系统之间传递用户的验证、属性和授权信息。
+而 SSO 需要在多个系统（多个域名）之间共享用户的状态，
+所以就需要一种机制，在不同的系统之间共享用户的状态。
+Security Assertion Markup Language，SAML，
+是一种基于XML的标准，长于在不同的系统之间传递用户的验证、属性和授权信息。
 
-信息交换流
-----------
+登录流程
+--------
 
 在 SSO 中，基本的角色有三种：
 
-    - 用户，User Agent, UA，通过浏览器或其它应用来使用 SP 提供的服务。
-    - 服务提供商，Service Provider，SP，提供具体服务的系统，比如公司内的人力资源网站、考勤网站等。
-    - 身份提供商，Identity Provider, IdP，负责验证用户、提供基本的用户信息和对用户授权。
-
-登录
-++++
+    - 用户，User Agent, UA，通过浏览器或其它应用来使用服务提供商提供的服务。
+    - 服务提供商，Service Provider，SP，提供具体服务的系统，比如公司内的人力资源网站。
+    - 身份提供商，Identity Provider, IdP，负责验证用户、提供基本的信息和对用户授权。
 
 以用户通过浏览器来访问服务提供商的服务为例，用户首次登录的流程如下：
 
@@ -65,23 +65,22 @@ Security Assertion Markup Language，SAML，就是一种基于XML的标准去在
     :alt: 通过浏览器首次登录流程图
     :name: login_basic
 
-其中：
+其中每个步骤的含义如下：
 
     1. 未登录的 *用户* 访问 *服务提供商* 的某些受限资源。 
     2. *服务提供商* 向 *身份提供商* 发送一个 ``<AuthnRequest>`` 的 SAML 请求。
     3. *身份提供商* 验证 *用户* 的身份。
-    4. *省份提供商* 向 *服务提供商* 返回一个 ``<Response>`` 的 SAML 回应。
+    4. *身份提供商* 向 *服务提供商* 返回一个 ``<Response>`` 的 SAML 响应。
     5. *身份提供商* 根据返回的信息，决定和 *用户* 的后续交互。
 
-在 OASIS_ 提供的一系列文档中，根据用户首先访问的是服务提供商还是身份提供商将 SSO 分为
-*SP_Initiated SSO* 和 *IdP_Initiated SSO* ；根据用户使用的浏览器还是其他客户端将 SSO 分为
-*Web Browser SSO* 和 *Enhanced Client and Proxy SSO* 。
+在 OASIS_ 提供的一系列文档中，根据用户首先访问的是服务提供商还是身份提供商、
+用户使用的是浏览器还是其他客户端这两个标准对流程做了细分。
 
 Bindings
 ++++++++
 
-在了解这些具体的之前，我们有必要了解 SAML 中如何通过现有的通信协议来交换请求和回应。
-在 SAML 中我们称之为 **Binding** 。
+在了解这些具体的分类之前，我们有必要了解 SAML 是如何通过现有的通信协议来交换请求和响应。
+相关内容在 SAML 中被称为 **Binding** 。
 
     - **HTTP Redirect Binding**
 
@@ -93,6 +92,7 @@ Bindings
 
       SAML 请求方通过发送一个 status 为 303 或 302 的 HTTP response 给 HTTP user agent
       来实现中转。
+
     - **HTTP POST Binding**
 
       在这种情况下，仍然需要 HTTP user agent 来中转 SAML 消息。不同的地方在于，
@@ -103,12 +103,15 @@ Bindings
 
       Simple Object Access Protocol，SOAP，是一种在不同的系统之间交换结构化信息的标准。
       SAML 的请求方和接收方通过零个或多个 SOAP 中介来进行直接的信息交换。
+      一般通过HTTP来传送 SOAP信息。
+
     - **Reverse SOAP(PAOS) Binding**
 
-      PAOS 中涉及两个角色
+      PAOS 有点复杂，所以需要稍微多说几句。
+      PAOS 中涉及两个角色：
 
-        + HTTP requester，同时也是 SAML responser
-        + SAML requester，同时也是 HTTP responser
+        + HTTP requester，同时也是 SAML responder
+        + SAML requester，同时也是 HTTP responder
 
       四类消息：
 
@@ -122,26 +125,38 @@ Bindings
        PASO 被使用的情况主要是：
        客户端发送了一个请求，但是服务端需要再从客户端除获取一些信息之后才能给出答复。
 
+       具体的流程是：
+
+        1. HTTP requester 向 SMAL requester 发送一个 HTTP request
+        2. SMAL requester 向 HTTP requester 返回一个 HTTP response(SOAP(SAML request))
+        3. HTTP requester 向 SMAL requester 发送一个 HTTP request(SOAP(SAML request))
+        4. SMAL requester 向 HTTP requester 返回一个 HTTP response，作为对最开始的请求的响应
+
     - **HTTP Artifact Binding**
 
-      描述了这样一种情况，需要 HTTP user agent 来补充一些信息，但是一些重要的信息不希望通过
-      HTTP user agent 来传递，而是希望在发送方和接收方之间直接传递。
+      描述了这样一种情况，需要 HTTP user agent 来补充一些信息，
+      但是其它的信息在发送方和接收方之间直接传递。
 
       于是，即使用 HTTP Redirect Binding 或 HTTP POST Binding，也使用 SOAP Binding 或 PAOS Binding。
 
+Web Browse
+++++++++++
 
 现在再来看用户通过浏览器首次登录的流程。
 其实可以细分为两种情况：
 
     - **SP_Initiated SSO: Redirect/POST Bindings**
 
-      即在第 2 步中转 ``<AuthnReqeust>`` 时使用 HTTP Redirect Binding，
-      而在第 4 步中转 ``<Response>`` 时使用 HTTP POST Binding。
+      流程和图 login_basic_ 中的一致，具体的：
+
+        - 在第 2 步中转 ``<AuthnReqeust>`` 时使用 HTTP Redirect Binding，
+        - 而在第 4 步中转 ``<Response>`` 时使用 HTTP POST Binding。
     - **SP_Initiated SSO: POST/Artifact Bindings**
 
       在这种情况中，通过 HTTP POST Binding 来发送 ``<AuthnRequest>`` ，
       主要是考虑到 HTTP Redirect Binding 通过 URL 来传递参数，当参数长度较长时，
       可能遇到一些问题。
+
       而在第 4 步时，通过 HTTP Artifact Binding 来传达具体的 SAML 信息。
       于是最终的流程变更为：
 
@@ -149,9 +164,14 @@ Bindings
     :scale: 80
     :align: center
 
-当用户通过 Enchaned Client or Proxy 来访问服务是，首次登录流程再次变更。
-区别在于用户和服务提供商通过 HTTP PAOS Binding 来交流，
-用户和身份提供商通过 HTTP SOAP Binding 来交换信息，
+Enchaned Client or Proxy
+++++++++++++++++++++++++
+
+当用户通过 Enchaned Client or Proxy 来访问服务时，首次登录流程再次变更。
+区别浏览器的地方在于：
+
+    - 用户和服务提供商通过 HTTP PAOS Binding 来交换信息
+    - 用户和身份提供商通过 HTTP SOAP Binding 来交换信息
 具体如下：
 
 .. image:: login_03.png
@@ -162,8 +182,8 @@ Bindings
 也有一种情况是，用户首先访问身份提供商，登录成功后，再选择某个服务提供商进行访问。
 因为这种情况比较小众而且没有本质的区别，就不在这儿多做叙述。
 
-退出
-----
+退出流程
+--------
 
 退出的情况比较简单，需要注意是：当用户在某个服务提供商处请求退出后，身份提供商应该负责通知
 其他用户访问过的服务提供商销毁对应 session。
@@ -173,5 +193,17 @@ Bindings
     :scale: 80
     :align: center
 
+参考
+----
+
+#. `Single sign-on - Wikipedia, the free encyclopedia
+   <https://en.wikipedia.org/wiki/Single_sign-on>`_
+#. `Security Assertion Markup Language (SAML) V2.0 Technical Overview
+   <https://www.oasis-open.org/committees/download.php/27819/sstc-saml-tech-overview-2.0-cd-02.pdf>`_
+#. `Bindings for the OASIS Security Assertion Markup Language (SAML) V2.0
+   <http://docs.oasis-open.org/security/saml/v2.0/saml-bindings-2.0-os.pdf>`_
+#. `Profiles for the OASIS Security Assertion Markup Language (SAML) V2.0
+   <http://docs.oasis-open.org/security/saml/v2.0/saml-profiles-2.0-os.pdf>`_
 
 .. _OASIS: https://www.oasis-open.org/committees/tc_home.php?wg_abbrev=security
+
