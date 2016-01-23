@@ -1,5 +1,5 @@
-基于SAML的单点登录系统 一
-=========================
+基于SAML的单点登录系统一
+========================
 
 .. author:: default
 .. categories:: 技术
@@ -60,6 +60,10 @@ Security Assertion Markup Language，SAML，就是一种基于XML的标准去在
 以用户通过浏览器来访问服务提供商的服务为例，用户首次登录的流程如下：
 
 .. image:: login_01.png
+    :scale: 80
+    :align: center
+    :alt: 通过浏览器首次登录流程图
+    :name: login_basic
 
 其中：
 
@@ -142,6 +146,8 @@ Bindings
       于是最终的流程变更为：
 
 .. image:: login_02.png
+    :scale: 80
+    :align: center
 
 当用户通过 Enchaned Client or Proxy 来访问服务是，首次登录流程再次变更。
 区别在于用户和服务提供商通过 HTTP PAOS Binding 来交流，
@@ -149,6 +155,8 @@ Bindings
 具体如下：
 
 .. image:: login_03.png
+    :scale: 80
+    :align: center
 
 我们上面讲述的都是用户首先访问服务提供商，进而导致登录的情况。
 也有一种情况是，用户首先访问身份提供商，登录成功后，再选择某个服务提供商进行访问。
@@ -162,6 +170,8 @@ Bindings
 具体的流程：
 
 .. image:: logout.png
+    :scale: 80
+    :align: center
 
 
 .. _OASIS: https://www.oasis-open.org/committees/tc_home.php?wg_abbrev=security
