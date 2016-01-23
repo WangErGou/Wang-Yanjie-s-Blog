@@ -4,6 +4,7 @@ Sitemap
 .. toctree::
    :maxdepth: 1
 
+   2016/01/23/sso_saml
    2015/12/23/python_encoding_3
    2015/12/15/cookies_size
    2015/12/03/meituan_interview
