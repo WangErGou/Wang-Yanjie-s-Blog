@@ -172,6 +172,7 @@ Enchaned Client or Proxy
 
     - 用户和服务提供商通过 HTTP PAOS Binding 来交换信息
     - 用户和身份提供商通过 HTTP SOAP Binding 来交换信息
+
 具体如下：
 
 .. image:: login_03.png
