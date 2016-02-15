@@ -32,5 +32,17 @@ def main():
         producer.next()
 
 
+def F():
+    a, b = 0, 1
+    yield a
+    yield b
+    while True:
+        a, b = b, a+b
+        yield b
+
+
 if __name__ == '__main__':
-    main()
+    for i, e in enumerate(F()):
+        print i, e
+        if i == 10:
+            break
