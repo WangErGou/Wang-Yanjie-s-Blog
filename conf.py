@@ -69,7 +69,7 @@ first_page_title = None
 # Add other Sphinx extensions here
 extensions = [
     'tinkerer.ext.blog', 'tinkerer.ext.disqus',
-    'sphinxcontrib.chinesebeautiful',
+#    'sphinxcontrib.chinesebeautiful',
 ]
 
 # Add other template paths here

@@ -4,6 +4,7 @@ Sitemap
 .. toctree::
    :maxdepth: 1
 
+   2016/02/19/cgi
    2016/02/09/sso_signature
    2016/01/23/sso_saml
    2015/12/23/python_encoding_3
